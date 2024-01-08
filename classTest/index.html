@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@700;900&display=swap" rel="stylesheet">
+    <title>Info-Network</title>
+  </head>
+  <body>
+    <nav id="navigation">
+      <div id="btnNav1" class="btnNav">La couche osi</div>
+      <div id="btnNav2" class="btnNav">Le réseau tcp/ip</div>
+      <div id="btnNav3" class="btnNav">les adresses ip</div>
+      <div id="btnNav4" class="btnNav">les ports</div>
+    </nav>
+
+
+    <div id="containerAcceuil" style="display: flex;">
+      <div id="imageContainer" ></div>
+    </div>
+    <div class="container" style="display: none;" >
+      <div id="osi">
+        <div id="osiName1" class="application osiName"><p>Application</p></div>
+        <div id="osiName2" class="presentation osiName">
+          <p>presentation</p>
+        </div>
+        <div id="osiName3" class="session osiName"><p>Session</p></div>
+        <div id="osiName4" class="transport osiName"><p>Transport</p></div>
+        <div id="osiName5" class="reseau osiName"><p>Reseau</p></div>
+        <div id="osiName6" class="liaisonDonnées osiName">
+          <p>Liaison Data</p>
+        </div>
+        <div id="osiName7" class="physique osiName"><p>Physique</p></div>
+      </div>
+
+      <div id="containerLiaison">
+        <div id="liaison1" class="liaison"></div>
+        <div id="liaison2" class="liaison"></div>
+        <div id="liaison3" class="liaison"></div>
+        <div id="liaison4" class="liaison"></div>
+        <div id="liaison5" class="liaison"></div>
+        <div id="liaison6" class="liaison"></div>
+        <div id="liaison7" class="liaison"></div>
+      </div>
+
+      <div id="article" class="article">
+        <div id="articleContenu" class="articleContenu">
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+
+    </footer>
+    <!-- <script>
+      (() => {
+       document.write("hello world");
+      })();
+    </script> -->
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

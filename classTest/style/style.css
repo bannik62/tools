@@ -1,0 +1,225 @@
+/* * {
+    margin: 0;
+    padding: 0;
+  } */
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(to top left, #000, #000);
+  color: #32cd32; /* Vert */
+  height: auto;
+}
+
+#navigation {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  border: 2px solid green;
+  padding: 5%;
+  width: 90%;
+  background: linear-gradient(to top left, #000, green);
+}
+
+.btnNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 10px;
+  width: 220px;
+  height: 30px;
+  margin: 5px;
+  padding: 15px;
+  background-color: #282626;
+  color: #32cd32; /* Vert */
+  font-size: xx-large;
+  cursor: pointer;
+}
+.btnNav .osiName:hover {
+  cursor: pointer;
+}
+
+.container {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 3%;
+  height: auto;
+}
+#containerAcceuil {
+  background-image: url(../img/Antenna_Interference_Blog_Article_Banner-1515x697_371bfd06-bb21-4fc2-baa7-5bdac49f77e4_1515x.webp);
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 80vh;
+}
+
+#imageContainer {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  animation: changeImage 6s forwards;
+}
+@keyframes changeImage {
+  0% {
+    background-image: url("../img/1.jpeg");
+  }
+  35% {
+    background-image: url("../img/2.jpeg");
+    transform: scale(1);
+  }
+  40% {
+    background-image: url("../img/1.jpg");
+  }
+  70% {
+    background-image: url("../img/1.jpeg");
+    transform: scale(1);
+  }
+  75% {
+    background-image: url("../img/2.jpeg");
+    transform: scale(0);
+  }
+  77% {
+    background-image: url("../img/1.jpeg");
+  }
+  100% {
+    background-image: url("../img/3.jpg");
+  }
+}
+
+#osi {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 25%;
+  height: 90vh;
+}
+
+.osiName {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #282626;
+  color: #32cd32; /* Vert */
+}
+.osiName:hover {
+  position: relative;
+  height: 10%; /* Hauteur lorsque survolé */
+  z-index: 2;
+  background-color: #32cd32;
+  border: 3px solid #1e701e; /* Vert */
+  color: #000;
+}
+.osiName > p {
+  font-family: "Playfair Display SC", serif;
+  font-size: x-large;
+}
+.osiName:hover p {
+  font-family: "Playfair Display SC", serif;
+  font-size: xx-large;
+  color: black;
+}
+
+#containerLiaison {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 20%;
+  height: 90vh;
+}
+
+.liaison {
+  border: 10px rgb(0, 0, 0);
+  border-bottom-style: dotted;
+  margin-bottom: 10%;
+  width: 20px; /* Largeur initiale */
+  height: 180px;
+  transition: width 1s; /* Animation de transition pour la largeur */
+}
+
+.liaison:hover {
+  width: 100%; /* Largeur finale au survol */
+}
+
+.green {
+  box-sizing: border-box;
+  border: 10px green;
+  border-bottom-style: dotted;
+  margin-bottom: 10%;
+  width: 100%;
+  height: 180px;
+}
+
+#article {
+  flex-grow: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 20%;
+  height: 90vh;
+}
+
+.articleContenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #000;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin: 5% 0;
+  height: 100%;
+}
+
+.card {
+  overflow: auto;
+  width: 98%;
+  height: 92%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #282626;
+  margin: 5px;
+  color: #32cd32; /* Vert */
+}
+
+.card > h3 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #32cd32; /* Vert */
+  margin: 0 20% 0 20%;
+}
+.card > p {
+  font-family: "Playfair Display SC", sans-serif;
+  letter-spacing: 2px;
+  font-size: 2em;
+  line-height: 1.4;
+  color: #32cd32; /* Vert */
+}
+p {
+  font-size: 1em;
+  line-height: 1.4;
+  color: #32cd32; /* Vert */
+}
+
+footer {
+  background: linear-gradient(to bottom right, #000, green);
+
+  box-sizing: content-box;
+  display: flex !important;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  border: 2px solid green;
+  padding: 5% 0;
+  width: 100%;
+  color: #32cd32; /* Vert */
+}

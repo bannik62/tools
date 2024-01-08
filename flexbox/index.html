@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+      integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <title>flex</title>
+  </head>
+  <body class="d-flex flex-column justify-content-center">
+    <nav class="navbar">
+      <div class="flextitle">
+        <p class="titre">flextool</p>
+        <div class="logo">
+          <img
+            src="/img/Tetris_J.svg"
+            alt="animation"
+            class="hover"
+            style="height: 58px"
+          />
+          <img
+            src="/img/Tetris_Z.svg"
+            alt="image"
+            class=""
+            style="height: 58px"
+          />
+        </div>
+      </div>
+      <h2 class="onglet1" onclick="changeTab('tab1')">Eléments</h2>
+      <h2 class="onglet2" onclick="changeTab('tab2')">Display</h2>
+    </nav>
+    <!-- ///////////////////////// flexbox///////////////////////////////////////// -->
+    <div class="center d-flex">
+      <div class="menu">
+        <h2 style="padding: 3px">Menu</h2>
+
+        <div id="tab1" class="menuContenu1">
+          <form action="">
+            <button
+              type="button"
+              class="btn btn-dark p-3 m-3"
+              onclick="generateElement()"
+            >
+              Générer éléments
+            </button>
+            <br />
+            <select name="elements" id="elements">
+              <option value="nav">Nav</option>
+              <option value="div">div</option>
+              <option value="footer">footer</option>
+            </select>
+            <br />
+            <button class="btn btn-dark m-3" onclick="location.reload()">
+              Recharger
+            </button>
+          </form>
+        </div>
+
+        <div id="tab2" class="menuContenu2">
+          <form action="">
+            <label for="flex-wrap">flex-wrap:</label>
+            <select id="flex-wrap" onchange="applyFlexboxStyles()">
+              <option value="">rien</option>
+              <option value="wrap">wrap</option>
+              <option value="nowrap">nowrap</option>
+              <option value="wrap-reverse">wrap-reverse</option>
+            </select>
+
+            <label for="flex-direction">flex-direction:</label>
+            <select id="flex-direction" onchange="applyFlexboxStyles()">
+              <option value="">rien</option>
+              <option value="row">row</option>
+              <option value="row-reverse">row-reverse</option>
+              <option value="column">column</option>
+              <option value="column-reverse">column-reverse</option>
+            </select>
+
+            <label for="justify-content">justify-content:</label>
+            <select id="justify-content" onchange="applyFlexboxStyles()">
+              <option value="">rien</option>
+              <option value="flex-start">flex-start</option>
+              <option value="flex-end">flex-end</option>
+              <option value="center">center</option>
+              <option value="space-between">space-between</option>
+              <option value="space-around">space-around</option>
+            </select>
+
+            <label for="align-items">align-items:</label>
+            <select id="align-items" onchange="applyFlexboxStyles()">
+              <option value="">rien</option>
+              <option value="center">center</option>
+              <option value="baseline">baseline</option>
+              <option value="stretch">stretch</option>
+            </select>
+          </form>
+        </div>
+      </div>
+
+      <div id="display" class="display" style="display: flex">
+        <div class="navSimul"></div>
+        <div class="bodySimul"></div>
+        <div class="footerSimul"></div>
+      </div>
+    </div>
+    <!-- ////////////////////////scanner port ///////////////////////////////// -->
+    <div class="p-2 m-5 bg-dark">
+      <h2 class="p-2 m5 text-bg-light">scanner de ports</h2>
+      <input type="text" id="ipAddress" placeholder="Adresse IP" />
+      <button onclick="sendRequest()">Envoyer la requête</button>
+      <div id="response"></div>
+    </div>
+
+    <!-- NUTRITION:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+    <div class="menufooter m-5">
+      <div id="scanner-container"></div>
+
+      <input type="button" id="btn" value="Start/Stop the scanner" />
+
+      <div class="d-flex justify-content-center">
+        <input type="text" id="responseN" />
+        <button onclick="nutrition()">Nutrition</button>
+      </div>
+    </div>
+    <!-- /////////////////////////////////////////::youtube aléatoire ///////////////////////////////////////// -->
+    <div class="container bg-body-tertiary m-5 border border-3">
+      <div class="container flex-lg-row p-3">
+        <nav class="align-items-center navyout">
+          <img
+            src="/img/Telecharger-YouTube.webp"
+            alt="image"
+            style="height: 130px; width: 140px"
+          />
+          <h1 class="m-3 ms-0 me-5">Random youtube pour vous servire :</h1>
+        </nav>
+
+        <!-- Critères de recherche -->
+        
+          <label for="keywordInput">Mot-clé :</label>
+          <input
+            type="text"
+            
+            id="keywordInput"
+            placeholder="Mot-clé"
+          />
+        </div>
+
+        
+          <label for="videoTypeSelect">Type de vidéo :</label>
+          <select  id="videoTypeSelect">
+            <option value="video">Vidéo</option>
+          </select>
+        </div>
+
+        
+          <label for="videoDurationSelect">Durée de la vidéo :</label>
+          <select  id="videoDurationSelect">
+            <option value="any">Toute durée</option>
+            <option value="short">Courte</option>
+            <option value="medium">Moyenne</option>
+            <option value="long">Longue</option>
+          </select>
+        </div>
+
+        
+          <label for="videoCategoryIdSelect">Catégorie de la vidéo :</label>
+          <select  id="videoCategoryIdSelect">
+            <option value="">Toutes les catégories</option>
+            <option value="2">Autos & véhicules</option>
+            <option value="10">Musique</option>
+            <option value="15">Animaux</option>
+            <option value="17">Sports</option>
+            <!-- Ajoutez d'autres catégories ici -->
+          </select>
+        </div>
+
+        
+          <label for="relevanceLanguageSelect">Langue de pertinence :</label>
+          <select  id="relevanceLanguageSelect">
+            <option value="any">Toutes les langues</option>
+            <option value="fr">Français</option>
+            <option value="en">Anglais</option>
+          </select>
+        </div>
+
+        <!-- Bouton pour lancer la recherche -->
+        <button class="btn btn-primary m-3" onclick="loadRandomVideo()">
+          Afficher une vidéo aléatoire
+        </button>
+
+        <hr />
+
+        <!-- Zone d'affichage de la vidéo -->
+        <div id="videoContainer"></div>
+      </div>
+    </div>
+
+    <!-- //////////////////////////////authentification basisc //////////////////////////////////////// -->
+    <a id="ancre1"></a>
+    <div
+      class="container autenti d-flex justify-content-around align-items-center m-5"
+    >
+      <h1>authentification basic</h1>
+      <form action="">
+        <label for="identifiant">Identifiant:</label>
+        <input
+          type="text"
+          id="identifiant"
+          placeholder="Entrez votre identifiant"
+        /><br />
+        <label for="password">Mot de passe:</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Entrez votre mot de passe"
+        /><br />
+        <button onclick="creerCompte()">Créer le Compte</button>
+        <button onclick="connexion()">Connexion</button>
+        <button onclick="deconnexion()">Déconnexion</button>
+      </form>
+    </div>
+    <div class="lienDiv container d-flex justify-content-evenly m-3 ms-0 p-5">
+      <button onclick="afficherComptes()">Afficher les comptes</button>
+    </div>
+    <!-- /////////////////////////////////crud::::::/:::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+    <div
+      class="container mb-5 mt-0 p-4 border border-1 bg-light overflow-hidden"
+    >
+      <h2>Gerer les contacts</h2>
+      <form id="contactForm">
+        <div class="form-group gap-5">
+          <label for="name">Nom :</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Entrez le nom"
+            required
+          />
+          <label for="email">Email :</label>
+          <input
+            type="email"
+            
+            id="emailcompte"
+            placeholder="Entrez l'email"
+            required
+          />
+          <label for="phone">Téléphone :</label>
+          <input
+            type="tel"
+            
+            id="phone"
+            placeholder="Entrez le téléphone"
+            required
+          />
+        </div>
+        <div id="agenda" class="gap-5 p-5 d-flex justify-content-center">
+          <table border="3" class="gap-5 w-100 table table-striped-columns">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Supression</th>
+              </tr>
+            </thead>
+            <tbody id="agendaBody" class="">
+              <!-- Les données seront insérées ici -->
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </form>
+      <script></script>
+    </div>
+
+    <div id="displaygstdt" class="container displaygstdt">
+      <nav>
+        <div class="m-2 border border-3 border-dark">
+
+          <img
+            src="/public/logiciel-omnicanal.1.8.webp"
+            alt="logo"
+            class="logos"
+          />
+        </div>
+        <div class="boutonS" class=" m-2">
+          <button type="button" class="boutonStock btn btn-dark 1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            accéder à votre compte
+          </button>
+        </div>
+
+      </nav>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Compte</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex justify-content-around">
+        <div >
+          <h2>Inscription</h2>
+          <form onsubmit="inscription(event)">
+            
+              <label for="surnamei">identifiant :</label>
+              <input type="text"  id="surnamei" placeholder="Entrez votre identifiant" required>
+
+              <label for="firstName">Prénom :</label>
+              <input type="text"  id="firstNamei" placeholder="Entrez votre prénom" required>         
+            
+              <label for="lastName">Nom :</label>
+              <input type="text"  id="lastNamei" placeholder="Entrez votre nom" required>
+
+              <label for="emaili">Email :</label>
+              <input type="email"  id="emaili" placeholder="Entrez votre email" required>
+              
+              <label for="passi">password :</label>
+              <input type="text" id="passi" placeholder="Entrez votre mot de passe" required>
+          
+            <button type="submit" id="sign" class="btn btn-primary m-2">Inscription</button>
+          </form>
+        </div>
+       
+        <div> 
+          <h2>Connexion</h2>
+          <form id="userCon" onsubmit="connexion(event)">
+            
+              <label for="surName">Identifiant :</label>
+              <input type="text"  id="surname" placeholder="Entrez votre prénom" required>
+            
+              <label for="pass">Password :</label>
+              <input type="password" id="pass" placeholder="Entrez votre mots de passe" required>
+           
+
+            <button type="submit" class="btn btn-primary mt-5" id="conection">Soumettre</button>
+          </form>
+        </div>
+        <div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary closer" id="closer" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid "> 
+ <h2 id="bienvenue" class=""></h2> 
+ </div>
+<div class="stocko p-5 border-1 border-top border-black d-flex justify-content-around gap-5 flex-wrap" style="display:none">
+
+</div>
+    <script src="/js/script.js"></script>
+    <script src="/js/scannerPort.js"></script>
+    <script src="/js/scriptNutri.js"></script>
+    <script src="/js/youtScript.js"></script>
+    <script src="/js/gestionComptes.js"></script>
+    <script type="module" src="/js/crud.js"></script>
+    <script src="/js/gestionStock/crudStock.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  </body>
+</html>

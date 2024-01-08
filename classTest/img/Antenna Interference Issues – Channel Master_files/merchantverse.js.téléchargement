@@ -1,0 +1,16 @@
+'use strict';var f=Promise;class h{constructor(a){this.data=a}};class k{}function n(a,b){b&&(a.onmessage=c=>{var d=c.data;n(c.ports[0]);b(new h(d))})};/*
+
+ Copyright The Closure Library Authors.
+ SPDX-License-Identifier: Apache-2.0
+*/
+var v=({destination:a,l:b,origin:c,g:d="ZNWN1d",onMessage:e,i:l})=>{p({destination:a,j:()=>b.contentWindow,m:u(c),g:d,onMessage:e,i:l})};
+const p=({destination:a,j:b,m:c,o:d,g:e,onMessage:l,i:q})=>{const r=Object.create(null);c.forEach(m=>{r[m]=!0});new f((m,B)=>{const t=g=>{g.source&&g.source===b()&&!0===r[g.origin]&&(g.data.n||g.data)===e&&(a.removeEventListener("message",t,!1),d&&g.data.t!==d?B(Error(`Token mismatch while establishing channel "${e}". Expected ${d}, but received ${g.data.t}.`)):(n(g.ports[0],l),m(new k),q&&q(g)))};a.addEventListener("message",t,!1)})},u=a=>{a="string"===typeof a?[a]:a;const b=Object.create(null);
+a.forEach(c=>{if("null"===c)throw Error("Receiving from null origin not allowed without token verification. Please use NullOriginConnector.");b[c]=!0});return a};var w=class{constructor(a){this.h=a}toString(){return this.h.toString()}};/*
+
+ SPDX-License-Identifier: Apache-2.0
+*/
+const x="function"===typeof URL;function y(a,b){a.removeAttribute("srcdoc");var c="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation".split(" ");a.setAttribute("sandbox","");for(let e=0;e<c.length;e++)a.sandbox.supports&&!a.sandbox.supports(c[e])||a.sandbox.add(c[e]);if(b instanceof w)b=b instanceof w&&b.constructor===w?b.h:"type_error:SafeUrl";else{b:if(x){try{var d=new URL(b)}catch(e){c="https:";break b}c=d.protocol}else c:{c=document.createElement("a");
+try{c.href=b}catch(e){c=void 0;break c}c=c.protocol;c=":"===c||""===c?"https:":c}b="javascript:"!==c?b:void 0}void 0!==b&&(a.src=b)};function z(){const a=window.location.origin,b=new URL("https://www.google.com/shopping/merchantverse/");b.searchParams.set("origin",a);return b}
+function A(){const a=document.createElement("div");a.id="merchantverse-iframe-wrapper";a.style.overflow="hidden";a.hidden=!0;a.style.position="fixed";a.style.zIndex="2147483647";a.style.bottom="20px";a.style.right="20px";a.style.height="0px";a.style.width="0px";const b=document.createElement("iframe");b.id="merchantverseiframe";b.setAttribute("allowtransparency","true");b.setAttribute("frameBorder","0");b.setAttribute("scrolling","no");b.style.position="absolute";b.style.height="800px";b.style.width=
+"800px";b.style.zIndex="2147483647";b.style.bottom="0";b.style.right="0";a.appendChild(b);document.body.appendChild(a);const c=z();y(b,c.toString());v({destination:window,l:b,origin:c.origin,g:"merchantverse",onMessage:d=>{d=d.data;"resize"===d.action?(a.hidden=!1,a.style.height=`${d.height}px`,a.style.width=`${d.width}px`):"close"===d.action&&(a.hidden=!0)}})}var C=()=>{A()},D=["merchantverse","start"],E=this||self;D[0]in E||"undefined"==typeof E.execScript||E.execScript("var "+D[0]);
+for(var F;D.length&&(F=D.shift());)D.length||void 0===C?E[F]&&E[F]!==Object.prototype[F]?E=E[F]:E=E[F]={}:E[F]=C;

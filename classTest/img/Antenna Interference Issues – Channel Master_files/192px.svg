@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.9.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Standard_product_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="192px" height="192px" viewBox="0 0 192 192" enable-background="new 0 0 192 192" xml:space="preserve">
+<rect id="bounding_box_1_" fill="none" width="192" height="192"/>
+<g id="art_layer">
+	<g>
+		<path fill="#FD202B" d="M159.65,32l24.09,113.48c1.38,6.48-2.76,12.86-9.23,14.24L145,166L159.65,32z"/>
+		<g>
+			<path fill="#00AC4B" d="M118.55,183.67L17.22,159.6c-6.31-1.5-10.28-7.76-8.96-14.13L31.79,32l-2.53,113.37l105.63,21.34
+				l-1.93,8.08C131.43,181.22,124.98,185.2,118.55,183.67z"/>
+		</g>
+		<path fill="#FFB900" d="M135.39,171.74L33.43,153.87c-6.53-1.14-10.9-7.35-9.76-13.88l8.2-107.92L40,140h113l-3.73,21.98
+			C148.13,168.51,141.91,172.88,135.39,171.74z"/>
+		<path fill="#2D82F8" d="M120.97,32C120.45,18.68,109.45,8,96,8S71.55,18.68,71.03,32H32v104c0,6.63,5.37,12,12,12h104
+			c6.63,0,12-5.37,12-12V32H120.97z M96,17.97c7.95,0,14.46,6.21,14.98,14.03H81.02C81.54,24.18,88.05,17.97,96,17.97z"/>
+		<polygon fill="#FFFFFF" points="96,113.7 72.51,126 77,99.95 58,81.5 84.26,77.7 96,54 107.74,77.7 134,81.5 115,99.95 
+			119.49,126 		"/>
+	</g>
+</g>
+</svg>
