@@ -4,7 +4,7 @@
     
     function loadRandomVideo() {
         
-        const apiKey = 'AIzaSyA_rgylJlOMsEvlMktvDmWbQP1QZcqwHu8'; // Remplacez par votre clé d'API YouTube
+        const apiKey = '***'; // Remplacez par votre clé d'API YouTube
         const keyword = encodeURIComponent(document.getElementById('keywordInput').value);
         const videoDuration = document.getElementById('videoDurationSelect').value;
         const videoType = 'video';  // Nous voulons seulement des vidéos
