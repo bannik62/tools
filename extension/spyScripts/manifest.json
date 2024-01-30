@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "spyScript",
+    "version": "1.0",
+    "description": "Description de ton extension",
+    "permissions": ["activeTab", "scripting", "downloads", "tabs"],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icone16.png",
+        "48": "icone48.png",
+        "128": "icone128.png"
+      }
+    },
+    "icons": {
+      "16": "icone16.png",
+      "48": "icone48.png",
+      "128": "icone128.png"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["content.js"],
+        "run_at": "document_idle"
+      }
+    ]
+  }
+  
