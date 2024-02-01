@@ -4,6 +4,10 @@
     "version": "1.0",
     "description": "Description de ton extension",
     "permissions": ["activeTab", "scripting", "downloads", "tabs"],
+    "host_permissions": [
+      "http://*/*",
+      "https://*/*"
+  ],
     "action": {
       "default_popup": "popup.html",
       "default_icon": {
