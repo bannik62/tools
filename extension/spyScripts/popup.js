@@ -27,38 +27,39 @@ document.addEventListener("DOMContentLoaded", function() {
               downloadBtn.addEventListener("click", function() {
                 chrome.downloads.download({ url: scriptUrl });
               });
-              analyseBtn.textContent = "Analyser";
-             
+            
+                analyseBtn.textContent = "Analyser"; 
                 analyseBtn.addEventListener("click", () => {
                   console.log(scriptUrl);
                   sendScriptForAnalysis(scriptUrl);
                 });
              
 
-              function sendScriptForAnalysis(scriptContent) {
-                const apiUrl = 'http://127.0.0.1/api/analyse'; // Remplacez cela par l'URL de votre backend
-
-                fetch(scriptContent, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({ scriptContent: scriptContent }),
-                })
-                .then(response => {
-                   if (!response.ok) {
-                     throw new Error(`Réponse non OK: ${response.statusText}`);
-                   }
-                   return response.json();
-                })
-                .then(data => {
-                   console.log("Réponse du backend :", data);
-                })
-                .catch(error => {
-                   console.error("Erreur lors de l'envoi du script au backend :", error);
-                });
-                
+                function sendScriptForAnalysis(scriptContent) {
+                  const apiUrl = 'http://127.0.0.1:3000/api/analyse'; // Remplacez cela par l'URL de votre backend
+                  console.log("script " + scriptContent);
+                  
+                  fetch(apiUrl, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ text: scriptContent }),  // Utilisez la clé 'text'
+                  })
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error(`Réponse non OK: ${response.statusText}`);
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                      console.log("Réponse du backend :", data);
+                  })
+                  .catch(error => {
+                      console.error("Erreur lors de l'envoi du script au backend :", error);
+                  });
               }
+              
 
               tdDownload.appendChild(downloadBtn);
               tdDownload.appendChild(analyseBtn);  // Ajout du bouton d'analyse à côté du bouton de téléchargement
@@ -108,3 +109,8 @@ function formatFileSize(size) {
     return (size / gigabyte).toFixed(2) + " GB";
   }
 }
+
+
+
+
+
