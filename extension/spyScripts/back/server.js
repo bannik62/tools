@@ -1,4 +1,5 @@
 import express from "express";
+import nodemailer from "nodemailer";
 import cors from "cors";
 import fetch from "node-fetch";
 import OpenAI from "openai";
@@ -8,13 +9,14 @@ const openai = new OpenAI({
 
 const app = express();
 const corsOptions = {
-  origin: "http://127.0.0.1:3000", // Remplacez ceci par l'origine réelle de votre frontend
+  origin: "http://127.0.0.1:3000", 
   methods: ["POST", "GET"],
   optionsSuccessStatus: 204,
 };
 
 app.use(express.json());
 app.use(cors(corsOptions));
+
 
 app.post("/api/analyse", async (req, res) => {
   try {
@@ -39,7 +41,7 @@ app.post("/api/analyse", async (req, res) => {
       const words = scriptContent.split(/\s+/); // Diviser le script par espaces
       const chunks = [];
       let currentChunk = "";
-    
+
       for (const word of words) {
         if ((currentChunk + word).length <= chunkSize) {
           currentChunk += `${word} `;
@@ -48,19 +50,19 @@ app.post("/api/analyse", async (req, res) => {
           currentChunk = `${word} `;
         }
       }
-    
+
       if (currentChunk.trim() !== "") {
         chunks.push(currentChunk.trim());
       }
-    
+
       return chunks;
     }
-    
+
     const chunkSize = 3000; // Nombre maximal de mots (tokens) par morceau
     const scriptChunks = chunkScript(scriptContent, chunkSize);
     const responses = [];
     const delayBetweenRequests = 20000; // Délai entre les requêtes en millisecondes
-    
+
     for (const chunk of scriptChunks) {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -70,19 +72,44 @@ app.post("/api/analyse", async (req, res) => {
         ],
       });
       responses.push(completion.choices[0].message.content);
-    
+
       // Ajoute le délai entre les requêtes
       await new Promise(resolve => setTimeout(resolve, delayBetweenRequests));
     }
-    
+
     console.log("Réponses de l'API OpenAI :", responses);
+
+    // Envoyer l'e-mail avec les réponses
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "smtp62cent@gmail.com", // Remplacez par votre adresse e-mail Gmail
+        pass: "**"
+    }});
+
+    const mailOptions = {
+      from: "smtp62cent@gmail.com",
+      to: "djbk62@gmail.com", // Remplacez par l'adresse e-mail du destinataire
+      subject: "Analyse du script",
+      text: `Réponses de l'API OpenAI : ${responses.join('\n')}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Erreur lors de l'envoi de l'e-mail :", error);
+      } else {
+        console.log("E-mail envoyé avec succès :", info.response);
+      }
+    });
+
     res.json({ message: "Success", responseData: responses });
-    
+
   } catch (error) {
     console.error("Erreur dans la gestion de la requête /api/analyse :", error);
     res.status(500).send(error.message);
   }
 });
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
