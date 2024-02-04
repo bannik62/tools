@@ -3,7 +3,7 @@
     "name": "spyScript",
     "version": "1.0",
     "description": "Description de ton extension",
-    "permissions": ["activeTab", "scripting", "downloads", "tabs"],
+    "permissions": ["activeTab", "scripting", "downloads", "tabs","https://cdnjs.cloudflare.com/"],
 
     "action": {
       "default_popup": "popup.html",
@@ -28,5 +28,7 @@
         "run_at": "document_idle"
       }
     ]
+    
+    
   }
   
