@@ -80,10 +80,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             `width=${popupWidth},height=${popupHeight}`
                           );
                           loadingWindow;
+                          const style = loadingWindow.document.createElement("style")
+                          style.innerHTML =`p{font-size: 1rem } .display{padding:15px;border:solid 2px black;}` 
                           const resultElement = loadingWindow.document.createElement("div");
                           resultElement.classList.add("display")
                           const analyse = loadingWindow.document.createElement("p")
                           
+                          loadingWindow.document.head.appendChild(
+                            style
+                          )
                           loadingWindow.document.body.appendChild(
                             resultElement
                           );
@@ -135,8 +140,8 @@ function getScriptSize(url, callback) {
   fetch(url, { method: "HEAD" })
     .then((response) => {
       const size = response.headers.get("content-length");
-      console.log("lengt" + size);
-      callback(parseInt(size, 5));
+      console.log("length " + size);
+      callback(parseInt(size, 10));
     })
     .catch((error) => {
       callback(0);
@@ -144,6 +149,10 @@ function getScriptSize(url, callback) {
 }
 
 function formatFileSize(size) {
+  if (isNaN(size) || size <= 0) {
+    return "0 B";
+  }
+
   const kilobyte = 1024;
   const megabyte = kilobyte * 1024;
   const gigabyte = megabyte * 1024;
@@ -158,3 +167,4 @@ function formatFileSize(size) {
     return (size / gigabyte).toFixed(2) + " GB";
   }
 }
+
