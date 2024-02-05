@@ -4,10 +4,14 @@ let scriptList = [];
 // Fonction pour scanner les balises <script>
 function scanScripts() {
     const scripts = document.querySelectorAll('script');
+    const defaultDomain = window.location.origin; // Obtient le nom de domaine par défaut de la page
+
     scripts.forEach(script => {
         const src = script.getAttribute('src');
         if (src) {
-            scriptList.push(src);
+            // Vérifie si le script commence par "http" (externe) ou non (interne)
+            const scriptUrl = src.startsWith('http') ? src : `${defaultDomain}${src}`;
+            scriptList.push(scriptUrl);
         }
     });
 }

@@ -7,6 +7,7 @@
   <title>Script Loader</title>
   <style>
     body {
+      background-color: gainsboro;
       font-family: Arial, sans-serif;
       padding: 10px;
       min-width: 300px;
@@ -23,30 +24,98 @@
     form{
       padding: 5px;
       margin: 5px;
+      display: flex;
+      justify-content: space-between;
     }
 
     p{
       font-size: 3rem;
     }
     button {
-      margin-right: 10px;
+      padding: 3px;
+      margin: 10px;
+      width: 100px;
     }
 td{
   padding: 13px;
   border: black 2px solid;
+  background-color: white;
 }
+.spanInfo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: blue;
+  color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin-left: 3px;
+  margin-bottom: 3px;
+}
+.spanInfo>p{
+  font-size: 0.5rem;
+  color: white;
+}
+.label {
+  display: flex;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1rem;
+}
+
+.spanInfo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 120px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.spanInfo:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 
   </style>
 </head>
 <body>
   <h1>Scripts chargés dans cette page</h1>
-  <form id="apiForm">
+  <div class="label">
+    <label for="identifiants">Veuillez entrer les informations ci-dessous avant toute analyse </label>
+    <div class="spanInfo" ">
+      <p>Info</p>
+      <span class="tooltip" id="tooltipText">Vos identifiant ne sont pas enregistré , ils servent juste a analyser ponctuellement des scripts .ils ne sont pas nécessaire pour un simple télechargement</span>
+    </div>
+  </div>
+  <form id="apiForm" name="identifiants">
+    <div>
     <label for="email">Adresse e-mail :</label>
     <input type="email" id="email" name="email" required>
-
+</div>
+<div>
     <label for="apiKey">Clé API OpenAI :</label>
     <input type="text" id="apiKey" name="apiKey" required>
-
+</div>
     <button type="button" id="saveButton">Enregistrer</button>
   </form>
 
