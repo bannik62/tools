@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+
   chrome.windows.getLastFocused({ populate: true }, function (currentWindow) {
     chrome.tabs.query(
       { active: true, windowId: currentWindow.id },
@@ -36,11 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
                   analyseBtn.addEventListener("click", async () => {
                     // Affiche une fenêtre de chargement
                     window.alert(
-                      "Ne fermez pas la fenetre de l'extensions l'analyse peut prendre un temps conséquent"
+                      "Ne fermez pas la fenetre de l'extensions l'analyse peut prendre un temps conséquent ,  un email vous sera envoyer "
                     );
                     try {
                       // Envoie le script pour analyse au serveur
-                      const responses = await sendScriptForAnalysis(scriptUrl);
+                        sendScriptForAnalysis(scriptUrl);
                     } catch (error) {
                       // En cas d'erreur, affiche un message d'erreur dans la fenêtre de chargement
                       loadingWindow.document.body.innerHTML =
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           resultElement.appendChild(
                             analyse
                           ) ;
-                            analyse.innerHTML = `Résultats de l'analyse  : ${JSON.stringify(
+                            analyse.innerText = `Résultats de l'analyse  : ${JSON.stringify(
                             data
                           )}`;
                         } else {
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   }
 
                   tdDownload.appendChild(downloadBtn);
-                  tdDownload.appendChild(analyseBtn); // Ajout du bouton d'analyse à côté du bouton de téléchargement
+                  tdDownload.appendChild(analyseBtn); 
                   row.appendChild(tdDownload);
 
                   scriptTable.appendChild(row);
@@ -167,4 +168,32 @@ function formatFileSize(size) {
     return (size / gigabyte).toFixed(2) + " GB";
   }
 }
+
+
+const saveButton = document.getElementById('saveButton');
+  const emailInput = document.getElementById('email');
+  const apiKeyInput = document.getElementById('apiKey');
+
+  saveButton.addEventListener('click', async function () {
+    const email = emailInput.value;
+    const apiKey = apiKeyInput.value;
+
+    try {
+      const response = await fetch('http://127.0.0.1:3000/api/saveCredentials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, apiKey }),
+      });
+
+      if (response.ok) {
+        console.log('Credentials saved successfully.');
+      } else {
+        console.error('Failed to save credentials.');
+      }
+    } catch (error) {
+      console.error('Error saving credentials:', error);
+    }
+  });
 

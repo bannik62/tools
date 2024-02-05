@@ -3,13 +3,10 @@ import nodemailer from "nodemailer";
 import cors from "cors";
 import fetch from "node-fetch";
 import OpenAI from "openai";
-const openai = new OpenAI({
-  apiKey: "**",
-});
 
 const app = express();
 const corsOptions = {
-  origin: "http://127.0.0.1:3000", 
+  origin: "http://127.0.0.1:3000",
   methods: ["POST", "GET"],
   optionsSuccessStatus: 204,
 };
@@ -17,13 +14,33 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
+let userEmail = "";
+let userApiKey = "";
+
+app.post("/api/saveCredentials", (req, res) => {
+  const { email, apiKey } = req.body;
+  userEmail = email;
+  userApiKey = apiKey;
+  res.json({ message: 'Credentials saved successfully.' });
+});
 
 app.post("/api/analyse", async (req, res) => {
   try {
     console.log("Requête reçue :", req.body);
-
     const scriptUrl = req.body.text;
     console.log("scripturl " + scriptUrl);
+
+    const openai = new OpenAI({
+      apiKey: userApiKey,
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "smtp62cent@gmail.com",
+        pass: "*",
+      },
+    });
 
     const scriptResponse = await fetch(scriptUrl);
 
@@ -36,9 +53,8 @@ app.post("/api/analyse", async (req, res) => {
     const scriptContent = await scriptResponse.text();
     console.log("Script téléchargé :", scriptContent);
 
-    // Fonction pour diviser le script en morceaux de 3000 mots (tokens)
     function chunkScript(scriptContent, chunkSize) {
-      const words = scriptContent.split(/\s+/); // Diviser le script par espaces
+      const words = scriptContent.split(/\s+/);
       const chunks = [];
       let currentChunk = "";
 
@@ -58,10 +74,10 @@ app.post("/api/analyse", async (req, res) => {
       return chunks;
     }
 
-    const chunkSize = 3000; // Nombre maximal de mots (tokens) par morceau
+    const chunkSize = 3000;
     const scriptChunks = chunkScript(scriptContent, chunkSize);
     const responses = [];
-    const delayBetweenRequests = 20000; // Délai entre les requêtes en millisecondes
+    const delayBetweenRequests = 20000;
 
     for (const chunk of scriptChunks) {
       const completion = await openai.chat.completions.create({
@@ -73,23 +89,14 @@ app.post("/api/analyse", async (req, res) => {
       });
       responses.push(completion.choices[0].message.content);
 
-      // Ajoute le délai entre les requêtes
       await new Promise(resolve => setTimeout(resolve, delayBetweenRequests));
     }
 
     console.log("Réponses de l'API OpenAI :", responses);
 
-    // Envoyer l'e-mail avec les réponses
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "smtp62cent@gmail.com", // Remplacez par votre adresse e-mail Gmail
-        pass: "**"
-    }});
-
     const mailOptions = {
       from: "smtp62cent@gmail.com",
-      to: "djbk62@gmail.com", // Remplacez par l'adresse e-mail du destinataire
+      to: userEmail,
       subject: "Analyse du script",
       text: `Réponses de l'API OpenAI : ${responses.join('\n')}`,
     };
@@ -109,7 +116,6 @@ app.post("/api/analyse", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
