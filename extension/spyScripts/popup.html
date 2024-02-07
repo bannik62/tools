@@ -7,20 +7,36 @@
   <title>Script Loader</title>
   <style>
     body {
+      border: 5px solid black;
       background-color: gainsboro;
       font-family: Arial, sans-serif;
-      padding: 10px;
-      min-width: 300px;
-      max-width: 900px;
+      padding: 10px;  
+      min-width: 650px;
+      max-width: 950px;
+      width: 650px;
       /* display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column; */
+      overflow: scroll;
 
     }
-    h1{
-      margin:10px;
+    .h1{
+      margin:30px;
+      font-size: 2.5rem ;
     }
+    
+    .label {
+  position: relative;
+    left: -15px;
+    display: flex;
+    text-align: center;
+    /* margin-top: 30px; */
+    padding: 28px;
+    margin-right: 17px;
+    font-size: 1.1rem;
+}
+
     form{
       padding: 5px;
       margin: 5px;
@@ -36,33 +52,44 @@
       margin: 10px;
       width: 100px;
     }
+    input{
+      margin:  18px 5px 5px 5px;
+      height: 30px;
+    }
 td{
   padding: 13px;
   border: black 2px solid;
   background-color: white;
+  word-wrap: break-word; /* Permet de casser les mots longs */
+  max-width: 200px; 
+}
+tr{
+    width: 500px;
+
+}
+.tdDownload{
+    background-color: gray;
+  max-width: 70px; 
+
 }
 .spanInfo{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: blue;
-  color: white;
-  border: 1px solid black;
-  border-radius: 50%;
-  width: 15px;
-  height: 15px;
-  margin-left: 3px;
-  margin-bottom: 3px;
+  position: relative;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    background-color: blue;
+    color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 25px;;
+    height: 25px;
+    margin-left: 9px;
+    margin-top: -3px;
 }
 .spanInfo>p{
-  font-size: 0.5rem;
+  font-size: 1.5rem;
   color: white;
-}
-.label {
-  display: flex;
-  text-align: center;
-  margin-top: 50px;
-  font-size: 1rem;
+  font-weight: 100;
 }
 
 .spanInfo {
@@ -96,14 +123,26 @@ td{
 }
 
 
+#container{
+  display: flex;
+  flex-direction: column;
+
+}
+#apiKeyStatus{
+  font-size: large;
+  color : red 
+}
+
+
   </style>
 </head>
 <body>
-  <h1>Scripts chargés dans cette page</h1>
+  <div class="h1">Scripts chargés dans cette page</div>
+  <div id="container">
   <div class="label">
-    <label for="identifiants">Veuillez entrer les informations ci-dessous avant toute analyse </label>
+    <label for="identifiants"><u>Veuillez entrer les informations ci-dessous avant toute analyse</u></label>
     <div class="spanInfo" ">
-      <p>Info</p>
+      <p>i</p>
       <span class="tooltip" id="tooltipText">Vos identifiant ne sont pas enregistré , ils servent juste a analyser ponctuellement des scripts .ils ne sont pas nécessaire pour un simple télechargement</span>
     </div>
   </div>
@@ -114,14 +153,17 @@ td{
 </div>
 <div>
     <label for="apiKey">Clé API OpenAI :</label>
-    <input type="text" id="apiKey" name="apiKey" required>
+    <input type="password" id="apiKey" name="apiKey" required>
 </div>
     <button type="button" id="saveButton">Enregistrer</button>
+    <div><p id="apiKeyStatus" >Charger vos informations </p></div>
+    <button id="deleteApiKeyButton">supprimé votre clef</button>
   </form>
 
   <table id="scriptTable">
     <!-- Les scripts seront ajoutés ici   -->
   </table>
+</div>
   <script  src="popup.js"></script>
 
 </body>

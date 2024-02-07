@@ -10,7 +10,7 @@ function scanScripts() {
         const src = script.getAttribute('src');
         if (src) {
             // Vérifie si le script commence par "http" (externe) ou non (interne)
-            const scriptUrl = src.startsWith('http') ? src : `${defaultDomain}${src}`;
+            const scriptUrl = src.startsWith('http' || src.startsWith('www') || src.startsWith('//') ) ? src : `${defaultDomain}${src}`;
             scriptList.push(scriptUrl);
         }
     });

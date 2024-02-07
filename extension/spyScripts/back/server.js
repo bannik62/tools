@@ -17,13 +17,6 @@ app.use(cors(corsOptions));
 let userEmail = "";
 let userApiKey = "";
 
-app.post("/api/saveCredentials", (req, res) => {
-  const { email, apiKey } = req.body;
-  userEmail = email;
-  userApiKey = apiKey;
-  res.json({ message: 'Credentials saved successfully.' });
-});
-
 app.post("/api/analyse", async (req, res) => {
   try {
     console.log("Requête reçue :", req.body);
@@ -38,7 +31,7 @@ app.post("/api/analyse", async (req, res) => {
       service: "gmail",
       auth: {
         user: "smtp62cent@gmail.com",
-        pass: "*",
+        pass: "",
       },
     });
 
@@ -83,36 +76,74 @@ app.post("/api/analyse", async (req, res) => {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "tu es un expert en JavaScript" },
-          { role: "user", content: "analyse ce script et dit moi son utilité et en dernier mot tu ajoutes un tag pour le definir, les tag: tracking telemetrie ,sécurité ,suivi de bug,malveillant, publicitaire,cosmetique ,autre :" + chunk },
+          {
+            role: "system",
+            content: "tu es un expert en JavaScript est protocole réseaux ",
+          },
+          {
+            role: "user",
+            content: `analyse ce script, puis dit moi son utilité , en dernier mot tu ajoutes pour synthése un #tag entouré d'une balise <strong> qui défini le script , exemples de tags: [tracking telemetrie ,sécurité ,suivi de bug,malveillant, publicitaire,cosmetique ,autre].(utilise des balises <br>pour les saurt de ligne et les autre attributs html utile pour la mise en page du texte  n'utilise pas des \\n svp) : ${chunk} `,
+          },
         ],
       });
       responses.push(completion.choices[0].message.content);
 
-      await new Promise(resolve => setTimeout(resolve, delayBetweenRequests));
+      await new Promise((resolve) => setTimeout(resolve, delayBetweenRequests));
+      sendEmail();
     }
 
     console.log("Réponses de l'API OpenAI :", responses);
+    function sendEmail() {
+      const mailOptions = {
+        from: "smtp62cent@gmail.com",
+        to: userEmail,
+        subject: "Analyse du script",
+        text: `Réponses de l'API OpenAI : ${responses.join("\n")}`,
+      };
 
-    const mailOptions = {
-      from: "smtp62cent@gmail.com",
-      to: userEmail,
-      subject: "Analyse du script",
-      text: `Réponses de l'API OpenAI : ${responses.join('\n')}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Erreur lors de l'envoi de l'e-mail :", error);
-      } else {
-        console.log("E-mail envoyé avec succès :", info.response);
-      }
-    });
-
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Erreur lors de l'envoi de l'e-mail :", error);
+        } else {
+          console.log("E-mail envoyé avec succès :", info.response);
+        }
+      });
+    }
     res.json({ message: "Success", responseData: responses });
-
   } catch (error) {
     console.error("Erreur dans la gestion de la requête /api/analyse :", error);
+    res.status(500).send(error.message);
+  }
+});
+
+app.post("/api/saveCredentials", (req, res) => {
+  const { email, apiKey } = req.body;
+  userEmail = email;
+  userApiKey = apiKey;
+  res.json({ message: "Credentials saved successfully." });
+});
+
+app.get("/api/checkApiKey", (req, res) => {
+  try {
+    if (userApiKey) {
+      res.json({ keyLoaded: true });
+    } else {
+      res.json({ keyLoaded: false });
+    }
+  } catch (error) {
+    console.error("Erreur lors de la vérification de la clé API :", error);
+    res.status(500).send(error.message);
+  }
+});
+
+// Route pour vider la clé API OpenAI
+app.delete("/api/deleteApiKey", (req, res) => {
+  try {
+    userEmail = ""; // Vide l'email
+    userApiKey = ""; // Vide la clé API
+    res.json({ message: "Clé API supprimée avec succès." });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la clé API :", error);
     res.status(500).send(error.message);
   }
 });

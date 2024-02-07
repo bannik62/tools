@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({apiKey : "*"});
+const openai = new OpenAI({apiKey : ""});
   
 async function main() {
   const completion = await openai.chat.completions.create({
@@ -13,7 +13,7 @@ async function main() {
 
 main();
 
-
+// 
 
 // const maxTokens = 4000; // Limite de tokens par message
 

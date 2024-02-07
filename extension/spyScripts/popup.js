@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
   chrome.windows.getLastFocused({ populate: true }, function (currentWindow) {
     chrome.tabs.query(
       { active: true, windowId: currentWindow.id },
@@ -25,8 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
                   row.appendChild(tdSize);
 
                   const tdDownload = document.createElement("td");
+                  tdDownload.classList.add("tdDownload")
                   const downloadBtn = document.createElement("button");
-                  const analyseBtn = document.createElement("button");
+                  let analyseBtn = document.createElement("button");
+                  analyseBtn.setAttribute('disabled', true);
+                  analyseBtn.classList.add("disable")
+
 
                   downloadBtn.textContent = "Télécharger";
                   downloadBtn.addEventListener("click", function () {
@@ -39,9 +42,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.alert(
                       "Ne fermez pas la fenetre de l'extensions l'analyse peut prendre un temps conséquent ,  un email vous sera envoyer "
                     );
+                    const apiKeyStatus = document.getElementById('apiKeyStatus');
+                    apiKeyStatus.textContent = 'Analyse en cours ne supprimé pas vos informations';
+
                     try {
                       // Envoie le script pour analyse au serveur
-                        sendScriptForAnalysis(scriptUrl);
+                      sendScriptForAnalysis(scriptUrl);
                     } catch (error) {
                       // En cas d'erreur, affiche un message d'erreur dans la fenêtre de chargement
                       loadingWindow.document.body.innerHTML =
@@ -96,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           resultElement.appendChild(
                             analyse
                           ) ;
-                            analyse.innerText = `Résultats de l'analyse  : ${JSON.stringify(
+                          analyse.innerText = `Résultats de l'analyse  : ${JSON.stringify(
                             data
                           )}`;
                         } else {
@@ -120,6 +126,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                   getScriptSize(scriptUrl, function (size) {
                     tdSize.textContent = formatFileSize(size);
+                  });
+                });
+
+                // Sélectionnez tous les boutons avec la classe "disable"
+                let analyseBtns = document.querySelectorAll(".disable");
+
+                // Parcourez chaque bouton et ajoutez un écouteur d'événement "input" à chaque champ d'entrée
+                analyseBtns.forEach(function (analyseBtn) {
+                  apiKeyInput.addEventListener('input', function () {
+                    // Vérifiez si l'entrée est vide ou non
+                    if (apiKeyInput.value.trim() !== '') {
+                      // Si oui, enlevez l'attribut "disabled" du bouton actuel
+                      analyseBtn.removeAttribute('disabled');
+                    } else {
+                      // Sinon, ajoutez l'attribut "disabled" au bouton actuel
+                      analyseBtn.setAttribute('disabled', true);
+                    }
                   });
                 });
               } else {
@@ -171,29 +194,102 @@ function formatFileSize(size) {
 
 
 const saveButton = document.getElementById('saveButton');
-  const emailInput = document.getElementById('email');
-  const apiKeyInput = document.getElementById('apiKey');
+const emailInput = document.getElementById('email');
+const apiKeyInput = document.getElementById('apiKey');
+const deleteApiKeyButton = document.getElementById('deleteApiKeyButton');
 
-  saveButton.addEventListener('click', async function () {
-    const email = emailInput.value;
-    const apiKey = apiKeyInput.value;
 
-    try {
-      const response = await fetch('http://127.0.0.1:3000/api/saveCredentials', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, apiKey }),
-      });
+saveButton.addEventListener('click', async function () {
+  const email = emailInput.value;
+  const apiKey = apiKeyInput.value;
 
-      if (response.ok) {
-        console.log('Credentials saved successfully.');
-      } else {
-        console.error('Failed to save credentials.');
-      }
-    } catch (error) {
-      console.error('Error saving credentials:', error);
+  try {
+    const response = await fetch('http://127.0.0.1:3000/api/saveCredentials', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, apiKey }),
+    });
+
+    if (response.ok) {
+      console.log('Credentials saved successfully.');
+      console.log("apikey: "+ apiKey);
+      checkApiKey(apiKey) 
+
+    } else {
+      console.error('Failed to save credentials.');
+
     }
-  });
+  } catch (error) {
+    console.error('Error saving credentials:', error);
+  }
+});
 
+async function checkApiKey(apiKey) {
+  console.log("checkapi "+ apiKey);
+  try {
+    const response = await fetch('http://127.0.0.1:3000/api/checkApiKey');
+    const data = await response.json();
+    // Afficher l'état de la clé API OpenAI dans le front-end
+    const apiKeyStatus = document.getElementById('apiKeyStatus');
+    if (apiKey) {
+      apiKeyStatus.textContent = 'Informations enregistré';
+      apiKeyStatus.style.color = "green"; // Changer la couleur en vert lorsque la clé API est chargée
+    } else {
+      apiKeyStatus.textContent = 'Charger vos informations';
+      apiKeyStatus.style.color = "red"; // Changer la couleur en rouge lorsque la clé API n'est pas chargée
+    }
+    
+  } catch (error) {
+    console.error('Error checking API key:', error);
+  }
+}
+
+
+deleteApiKeyButton.addEventListener('click', async () => {  
+  event.preventDefault()
+  try {
+    const response = await fetch('http://127.0.0.1:3000/api/deleteApiKey', {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      console.log('Informations supprimées.');
+      const apiKeyStatus = document.getElementById('apiKeyStatus');
+      setTimeout(() => {      
+        apiKeyStatus.textContent = 'Charger vos informations';
+      }, 2000);
+      apiKeyStatus.textContent = 'Informations supprimées';
+      apiKeyStatus.style.color = "red";
+    } else {
+      console.error('Erreur lors de la suppression de la clé API.');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la clé API :', error);
+  }
+});
+
+
+
+// window.addEventListener('beforeunload', async function(event) {
+//   try {
+//     const response = await fetch('http://127.0.0.1:3000/api/deleteApiKey', {
+//       method: 'DELETE'
+//     });
+//     if (response.ok) {
+//       console.log('API Key deleted successfully.');
+//     } else {
+//       console.error('Failed to delete API Key.');
+//     }
+//   } catch (error) {
+//     console.error('Error deleting API Key:', error);
+//   }
+// });
+
+
+// setInterval(checkApiKey, 2000);  
+// const apiKey = document.getElementById('apiKey');
+// apiKey.addEventListener("change",  ()=>{
+// checkApiKey()
+// })
