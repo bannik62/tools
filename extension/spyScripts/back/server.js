@@ -116,8 +116,22 @@ app.post("/api/analyse", async (req, res) => {
   }
 });
 
+const apiKeyRegex = /^sk-[A-Za-z0-9]{24}$/; // Regex pour les clés API Secret OpenAI
+const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/; // Regex pour les adresses e-mail
+
 app.post("/api/saveCredentials", (req, res) => {
   const { email, apiKey } = req.body;
+
+  // Valider les données avec les regex
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format." });
+  }
+
+  if (!apiKeyRegex.test(apiKey)) {
+    return res.status(400).json({ error: "Invalid API key format." });
+  }
+
+  // Si les données sont valides, les enregistrer
   userEmail = email;
   userApiKey = apiKey;
   res.json({ message: "Credentials saved successfully." });

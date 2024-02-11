@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   });
 
                   function sendScriptForAnalysis(scriptContent) {
-                    const apiUrl = "http://127.0.0.1:3000/api/analyse"; // Remplacez cela par l'URL de votre backend
+                    const apiUrl = "http://146.59.226.113:3000/api/analyse"; // Remplacez cela par l'URL de votre backend
                     console.log("script " + scriptContent);
 
                     fetch(apiUrl, {
@@ -203,8 +203,22 @@ saveButton.addEventListener('click', async function () {
   const email = emailInput.value;
   const apiKey = apiKeyInput.value;
 
+//   // Vérifier les expressions régulières pour l'email et la clé API
+//   const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/; // Regex pour les adresses e-mail
+//   const apiKeyRegex = /^sk-[a-zA-Z0-9]{32}$/
+//     ; // Regex pour les clés API OpenAI
+//   const isEmailValid = emailRegex.test(email);
+//   const isApiKeyValid = apiKeyRegex.test(apiKey);
+// // 
+//   if (!isEmailValid || !isApiKeyValid) {
+//     // Afficher un message d'erreur si les données ne correspondent pas aux regex
+//     apiKeyStatus.textContent = 'Veuillez entrer des informations valides.';
+//     apiKeyStatus.style.color = 'red';
+//     return; // Arrêter l'exécution de la fonction
+//   }
+
   try {
-    const response = await fetch('http://127.0.0.1:3000/api/saveCredentials', {
+    const response = await fetch('http://146.59.226.113:3000/api/saveCredentials', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -215,21 +229,20 @@ saveButton.addEventListener('click', async function () {
     if (response.ok) {
       console.log('Credentials saved successfully.');
       console.log("apikey: "+ apiKey);
-      checkApiKey(apiKey) 
-
+      checkApiKey(apiKey);
     } else {
       console.error('Failed to save credentials.');
-
     }
   } catch (error) {
     console.error('Error saving credentials:', error);
   }
 });
 
+
 async function checkApiKey(apiKey) {
   console.log("checkapi "+ apiKey);
   try {
-    const response = await fetch('http://127.0.0.1:3000/api/checkApiKey');
+    const response = await fetch('http://146.59.226.113:3000/api/checkApiKey');
     const data = await response.json();
     // Afficher l'état de la clé API OpenAI dans le front-end
     const apiKeyStatus = document.getElementById('apiKeyStatus');
@@ -250,7 +263,7 @@ async function checkApiKey(apiKey) {
 deleteApiKeyButton.addEventListener('click', async () => {  
   event.preventDefault()
   try {
-    const response = await fetch('http://127.0.0.1:3000/api/deleteApiKey', {
+    const response = await fetch('http://146.59.226.113:3000/api/deleteApiKey', {
       method: 'DELETE'
     });
 
